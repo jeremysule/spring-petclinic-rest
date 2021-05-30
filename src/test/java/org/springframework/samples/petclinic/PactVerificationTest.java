@@ -18,8 +18,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.samples.petclinic.model.NamedEntity;
+import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.repository.PetTypeRepository;
 import org.springframework.test.context.ContextConfiguration;
+
+import java.util.Collection;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ContextConfiguration(classes = {PetClinicApplication.class})
@@ -49,9 +54,21 @@ public class PactVerificationTest {
         context.verifyInteraction();
     }
 
-    @State(value = "test state", action = StateChangeAction.SETUP)
+    @State(value = "has cats and dogs", action = StateChangeAction.SETUP)
     void testState(){
-        LOG.info("Types={}", petTypeRepository.findAll());
+        //Would normally be use to reach the require state for testing.
+        // In our case, it's done by the populateDB script;
+        List<String> types = petTypeRepository.findAll().stream().map(NamedEntity::getName).toList();
+        //<editor-fold desc="check State">
+        if (!types.contains("cat")){
+            throw new IllegalStateException("Missing cat type");
+        }
+        if (!types.contains("dog")){
+            throw new IllegalStateException("Missing dog type");
+        }
+        //</editor-fold>
+
+        LOG.info("Types={}", types);
     }
 
 
