@@ -6,6 +6,7 @@ import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.StateChangeAction;
 import au.com.dius.pact.provider.junitsupport.VerificationReports;
+import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
 import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
 import au.com.dius.pact.provider.spring.junit5.PactVerificationSpringProvider;
 import groovy.util.logging.Slf4j;
@@ -23,7 +24,8 @@ import org.springframework.test.context.ContextConfiguration;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ContextConfiguration(classes = {PetClinicApplication.class})
 @Provider("PetClinic")
-@PactFolder("pacts")
+//@PactFolder("pacts")
+@PactBroker
 @VerificationReports(value = {"console", "markdown"}, reportDir = "/home/jeremy/dev/contract/spring-petclinic-rest/pacts/reports")
 public class PactVerificationTest {
 
